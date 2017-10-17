@@ -1,0 +1,27 @@
+<mat-card class="mt10">
+    <h2><b>{{title}}</b></h2>
+    
+    <hr>
+    
+    <form (ngSubmit)="onProfileGroupSubmit()" [formGroup]="profileGroupForm">
+      <div class="float-left mr10 div-form-pattern">
+        <div class="float-left">
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-input-container>
+          <input matInput type="text" placeholder="Nome"
+          formControlName="group_profile_name" maxlength="191">
+        </mat-input-container>
+      </div>
+  
+      <div class="clear-both"></div>
+  
+      <mat-card-actions>
+        <button mat-raised-button type="submit" color="primary" [disabled]="!profileGroupForm.valid">{{submitButton}}</button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+  
+  <div class="list mt10">
+    <ntm-table-data [params]="paramsToTableData"></ntm-table-data>
+  </div>

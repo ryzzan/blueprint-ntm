@@ -1,0 +1,120 @@
+<mat-card class="mt10">
+    <h2><b>{{title}}</b></h2>
+    
+    <hr>
+    
+    <form (ngSubmit)="onOccupationSubmit()" [formGroup]="occupationForm">
+      <div class="float-left mr10 div-form-pattern">
+        <div class="float-left">
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-input-container>
+          <input matInput type="text" placeholder="Nome da Ocupação"
+          formControlName="occupation_name" maxlength="191">
+        </mat-input-container>
+      </div>
+  
+      <div class="float-left mr10 div-form-pattern">
+        <div class="float-left">
+          <mat-icon>filter_none</mat-icon>
+        </div>
+        <mat-input-container>
+          <input matInput type="text"
+          placeholder="Número da Ocupação"
+          formControlName="occupation_number"
+          maxlength="5">
+        </mat-input-container>
+      </div>
+  
+      <div class="float-left mr10 div-form-pattern">
+        <div class="float-left">
+          <mat-icon>group</mat-icon>
+        </div>
+        <mat-input-container>
+          <input matInput type="text"
+          placeholder="Nº da Participantes por Equipe"
+          formControlName="number_participants"
+          maxlength="5">
+        </mat-input-container>
+      </div>
+  
+      <div class="float-left mr10 div-form-pattern">
+        <div class="float-left">
+          <mat-icon>assignment_ind</mat-icon>
+        </div>
+        <mat-input-container>
+          <input matInput type="text"
+          placeholder="Idade Limite"
+          formControlName="age_limit"
+          maxlength="2">
+        </mat-input-container>
+      </div>
+  
+      <div class="float-left mr10">
+        <div class="float-left div-form-pattern">
+          <mat-icon>group_work</mat-icon>
+        </div>
+        <mat-form-field>
+        <mat-select class="font-pattern" placeholder="Área Tecnológica" formControlName="occupation_group_id">
+          <mat-option *ngFor="let occupationGroup of occupationGroupToSelect" [value]="occupationGroup.id">{{occupationGroup.occupation_group_name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+  
+      <div class="float-left mr10">
+        <div class="float-left div-form-pattern">
+          <mat-icon>group_work</mat-icon>
+        </div>
+        <mat-form-field>
+        <mat-select class="font-pattern" placeholder="Cidade Sede" formControlName="host_id">
+          <mat-option *ngFor="let host of hostToSelect" [value]="host.id">{{host.host_name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="clear-both"></div>
+      
+      <div class="float-left mr10">
+        <div class="float-left">
+          <mat-icon>group_work</mat-icon>
+        </div>
+        <mat-form-field>
+        <mat-select class="font-pattern" placeholder="Instituição" formControlName="institution_id">
+          <mat-option *ngFor="let institution of institutionToSelect" 
+          [value]="institution.id"> 
+            {{institution.institution_name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+
+      <div class="float-left mr10 div-form-pattern">
+        <div class="float-left">
+          <mat-icon>person_pin</mat-icon>
+        </div>
+        <mat-input-container>
+          <input matInput type="text"
+          placeholder="Apelido"
+          formControlName="nickname" maxlength="191">
+        </mat-input-container>
+      </div>
+  
+      <div class="float-left mr10 div-form-pattern">
+        <mat-slide-toggle [checked]="occupationForm.get('is_demonstration').value" (change)="onChangeDemonstrationOccupation($event)">Ocupação de Demonstração</mat-slide-toggle>
+      </div>
+      
+      <div class="float-left mr10 div-form-pattern">
+        <mat-slide-toggle [checked]="occupationForm.get('is_disability').value" (change)="onChangePCDOccupation($event)">Ocupação de PCD</mat-slide-toggle>
+      </div>
+  
+      <div class="clear-both"></div>
+  
+      <mat-card-actions>
+        <button mat-raised-button type="submit" color="primary" [disabled]="!occupationForm.valid">{{submitButton}}</button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+  
+  <div class="list mt10">
+    <ntm-table-data [params]="paramsToTableData"></ntm-table-data>
+  </div>

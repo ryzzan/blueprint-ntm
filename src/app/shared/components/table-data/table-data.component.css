@@ -25,10 +25,33 @@ th a mat-icon {
     vertical-align: middle;
 }
 
+div a mat-icon {
+    vertical-align: middle;
+}
+
+div span{
+    vertical-align: middle;
+}
+
 th {
     border: none;
     color: #BDBDBD;
     padding: 15px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.div-foot-pattern {
+    background-color: transparent;
+    font-size: 14px; 
+    vertical-align: middle;
+    padding: 10px 0 10px 0; 
 }
 
 .text-fix{
@@ -44,13 +67,16 @@ th {
 
 .search-pattern{
     vertical-align: middle;
-    font-size: 18px;
+    padding-top: 3px;
+    font-size: 17px;
     font-weight: normal;
     max-width: 100px;
 }
 .font-pattern{
     text-align: left;
     font-weight: normal;
+    font-size: 16px;
+    max-width: 100px;
 }
 
 .list-item:hover {
@@ -104,7 +130,7 @@ th {
     right: 0;
     margin: 0;
     text-align: right;
-    width: 65%;
+    width: 100%;
 }
 
 #toolbar-spacer {

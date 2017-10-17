@@ -1,0 +1,30 @@
+<mat-toolbar>
+  <div class="w70p">
+    <div class="float-left div-form-pattern w40">
+      <ntm-menu-sidenav [params]="paramsToMenuSideNav"></ntm-menu-sidenav>
+    </div>
+
+    <div class="float-left div-form-pattern mr20 mt10">
+      <a [routerLink]="['/main/dashboard']"> 
+        <div id="toolbar-title"><b>{{title}}</b></div> 
+      </a>
+    </div>
+  </div>
+
+  <div class="clear-both"></div>
+  <div class="w30p toolbar">
+    <div class="float-right div-form-pattern mr20">
+      <img src="./../assets/img/sesi-logo-toolbar.png" alt="" id="senai-icon">
+    </div>
+
+    <div class="clear-both"></div>
+  </div>
+</mat-toolbar>
+
+<mat-card>
+    
+</mat-card>
+
+<div id="router-outlet">
+  <router-outlet></router-outlet>
+</div>

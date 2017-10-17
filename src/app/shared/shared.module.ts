@@ -34,8 +34,6 @@ import { CrudService } from './services/laravel/crud.service';
 @NgModule({
   imports: [
     CommonModule,
-    TextMaskModule,
-    ReactiveFormsModule,
     MatCardModule,
     MatChipsModule,
     MatDatepickerModule,
@@ -48,7 +46,9 @@ import { CrudService } from './services/laravel/crud.service';
     MatProgressBarModule,
     MatButtonModule,
     MatSlideToggleModule,
-    MatToolbarModule
+    MatToolbarModule,
+    ReactiveFormsModule,
+    TextMaskModule
   ],
   exports:[
     DeleteConfirmComponent,
@@ -67,10 +67,10 @@ import { CrudService } from './services/laravel/crud.service';
     MatProgressBarModule,
     MatButtonModule,
     MenuSidenavComponent,
-    TableDataComponent,
-    ScheduleComponent,
     MatSlideToggleModule,
-    MatToolbarModule
+    MatToolbarModule,
+    ScheduleComponent,
+    TableDataComponent
   ],
   declarations: [
     DeleteConfirmComponent,

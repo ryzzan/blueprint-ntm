@@ -158,6 +158,8 @@ export class TableDataComponent implements OnInit {
         this.placeholderToPage = "de";
         this.placeholderToSearch = "Campo";
       }
+
+      console.log(this.placeholderToRowsPerPage)
     } 
     
     /**

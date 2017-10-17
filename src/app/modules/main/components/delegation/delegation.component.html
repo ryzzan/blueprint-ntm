@@ -1,0 +1,47 @@
+<mat-card class="mt20">
+  <h2><b>{{title}}</b></h2>
+  
+  <hr>
+  
+  <form (ngSubmit)="onDelegationSubmit()" [formGroup]="delegationForm">
+    <div class="float-left">
+      <div class="float-left div-form-pattern">
+        <mat-icon class="mat-18">gesture</mat-icon>
+      </div>
+      <div class="float-left mr10 div-form-pattern">
+      <mat-input-container>
+        <input matInput type="text" placeholder="Sigla"
+        formControlName="initials" maxlength="5">
+      </mat-input-container>
+      </div>
+    </div>
+
+
+    <div class="float-left" >
+      <div class="float-left div-form-pattern">
+        <mat-icon class="">person</mat-icon>
+      </div>
+      <div class="float-left mr10 div-form-pattern">
+      <mat-input-container>
+        <input matInput type="text" placeholder="Delegação"
+        formControlName="delegation_name" maxlength="191">
+      </mat-input-container>
+      </div>
+    </div>
+
+    <div class="float-left mr10 div-form-pattern">
+      <mat-slide-toggle [checked]="isForeign" (change)="onChangeForeignDelegation($event)" [checked]="isForeign">Delegação Estrangeira</mat-slide-toggle>
+    </div>
+
+    <div class="clear-both"></div>
+    
+    <mat-card-actions>
+      <button mat-raised-button type="submit" color="primary" [disabled]="!delegationForm.valid">{{submitButton}}</button>
+    </mat-card-actions>
+  </form>
+</mat-card>
+
+
+<div class="list mt20">
+  <ntm-table-data [params]="paramsToTableData"></ntm-table-data>
+</div>

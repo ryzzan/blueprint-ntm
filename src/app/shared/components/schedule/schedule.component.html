@@ -18,7 +18,7 @@
 
     <div *ngIf="chooseDate">
       <mat-form-field>
-        <input mdInput [matDatepicker]="picker" placeholder="Escolha uma data" formControlName="date"
+        <input matInput [matDatepicker]="picker" placeholder="Escolha uma data" formControlName="date"
         (dateChange)="onAddDateValue(i)">
         <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -28,7 +28,7 @@
     <div *ngIf="chooseTime">
       <div class="float-left mr10 div-form-pattern">
         <mat-input-container>
-          <input mdInput formControlName="timeStart" type="text"
+          <input matInput formControlName="timeStart" type="text"
           [textMask]="{mask: mask.time}"
           placeholder="Hora de início">
         </mat-input-container>
@@ -36,7 +36,7 @@
 
       <div class="float-left mr10 div-form-pattern">
         <mat-input-container>
-          <input mdInput formControlName="timeEnd" type="text"
+          <input matInput formControlName="timeEnd" type="text"
           [textMask]="{mask: mask.time}"
           placeholder="Hora de término"
           (keyup)="onAddTimeValue(i)">
@@ -75,7 +75,7 @@
           <div *ngFor="let dateControl of scheduleForm.get('dates.datesArray')?.controls; let i = index;">
             <div class="float-left mr10 div-form-pattern">
               <mat-form-field>
-                <input mdInput [mdDatepicker]="picker" placeholder="Escolha uma data" [formControlName]="i">
+                <input matInput [mdDatepicker]="picker" placeholder="Escolha uma data" [formControlName]="i">
                 <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>  
@@ -95,7 +95,7 @@
           <div *ngFor="let dateTimeControl of scheduleForm.get('dates.timesArray')?.controls; let j = index;">
             <div class="float-left mr10 div-form-pattern">
               <mat-input-container>
-                <input mdInput [formControlName]="j" type="text"
+                <input matInput [formControlName]="j" type="text"
                 [textMask]="{mask: mask.time}"
                 placeholder="Hora de início">
               </mat-input-container>
@@ -103,7 +103,7 @@
 
             <div class="float-left mr10 div-form-pattern">
               <mat-input-container>
-                <input mdInput [formControlName]="j" type="text"
+                <input matInput [formControlName]="j" type="text"
                 [textMask]="{mask: mask.time}"
                 placeholder="Hora de término">
               </mat-input-container>
@@ -123,7 +123,7 @@
           <div *ngFor="let intervalControl of scheduleForm.get('intervals').controls; let j = index;">
             <div class="float-left mr10 div-form-pattern">
               <mat-form-field>
-                <input mdInput [mdDatepicker]="intervalStartPicker" placeholder="Escolha a data de início" [formControlName]="intervalStart">
+                <input matInput [mdDatepicker]="intervalStartPicker" placeholder="Escolha a data de início" [formControlName]="intervalStart">
                 <mat-datepicker-toggle mdSuffix [for]="intervalStartPicker"></mat-datepicker-toggle>
                 <mat-datepicker #intervalStartPicker></mat-datepicker>
               </mat-form-field>  
@@ -131,7 +131,7 @@
 
             <div class="float-left mr10 div-form-pattern">
                 <mat-form-field>
-                  <input mdInput [mdDatepicker]="intervalEndPicker" placeholder="Escolha a data de término" [formControlName]="intervalEnd">
+                  <input matInput [mdDatepicker]="intervalEndPicker" placeholder="Escolha a data de término" [formControlName]="intervalEnd">
                   <mat-datepicker-toggle mdSuffix [for]="intervalEndPicker"></mat-datepicker-toggle>
                   <mat-datepicker #intervalEndPicker></mat-datepicker>
                 </mat-form-field>  
@@ -139,7 +139,7 @@
 
             <div class="float-left mr10 div-form-pattern">
               <mat-input-container>
-                <input mdInput [formControlName]="timeStart" type="text"
+                <input matInput [formControlName]="timeStart" type="text"
                 [textMask]="{mask: mask.time}"
                 placeholder="Hora de início">
               </mat-input-container>

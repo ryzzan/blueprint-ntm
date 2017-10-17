@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('blueprint-ntm App', () => {
+describe('sgo App', () => {
   let page: AppPage;
 
   beforeEach(() => {
