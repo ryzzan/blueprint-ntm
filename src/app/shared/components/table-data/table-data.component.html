@@ -1,0 +1,106 @@
+<div *ngIf="errors.length < 1">
+  <!--Toolbar area: start -->
+  <mat-card>
+    <mat-toolbar *ngIf="params.toolbar">
+      <div id="toolbar-title" *ngIf="!searchInput">{{params.toolbar.title}}</div> 
+      
+      <div id="toolbar-spacer" *ngIf="!searchInput"></div>
+
+      <div  id="toolbar-action">
+        <form [formGroup]="searchForm">
+          <a><mat-icon *ngIf="params.toolbar && params.toolbar.delete && (checkAllController || checkedItem)" (click)="openDialogToDelete(params.toolbar.delete)" class="vertical-align-m">delete</mat-icon></a>
+          
+          <a><mat-icon class="vertical-align-m" *ngIf="params.toolbar && params.toolbar.search" (click)="searchInputToggle()">search</mat-icon></a>
+          
+          <mat-select class="font-pattern" placeholder="{{placeholderToSearch}}" formControlName="searchSelect" *ngIf="searchInput">
+            <mat-option *ngFor="let header of arrayHeader; let i = index;" [value]="params.list.show[i]">{{header}}</mat-option>
+          </mat-select>
+          
+          <mat-input-container class="search-pattern" *ngIf="searchInput" style="margin-top:2px;">
+            <input type="text" mdInput placeholder="Pesquisar" formControlName="search" (keyup)="search()">
+          </mat-input-container>
+          
+          <mat-icon *ngIf="params.toolbar && params.toolbar.more">more_vert</mat-icon>
+        </form>
+      </div>
+    </mat-toolbar>
+    <!--Toolbar end -->
+
+    <!--List area: start -->
+    <form [formGroup]="listForm" class=""> 
+      <mat-progress-bar mode="indeterminate" *ngIf="isLoadingList"></mat-progress-bar>
+
+      <table *ngIf="!isLoadingList && arraySourceSearch.length>=1">
+        
+        <tr>
+          <th id="list-item-checkbox" *ngIf="params.toolbar && params.toolbar.delete">
+            <mat-checkbox (change)="checkAllToggle($event)" [checked]="checkAllController" ></mat-checkbox>
+          </th>
+
+          <th *ngFor="let header of arrayHeader; let i = index;">
+            {{ header }} <a><mat-icon class="mat-18" *ngIf="params.list.order" (click)="onClickOrder(i)">sort</mat-icon></a>
+          </th>
+
+          <th class="list-item-actions" *ngIf="params.list.edit || params.list.delete">
+            
+          </th>
+        </tr>
+        <tr class="list-item" *ngFor="let data of arraySourceSearch; let i = index">
+          <td *ngIf="params.toolbar && params.toolbar.delete" [ngStyle]="{'background-color': arraySource[i].backgroundColor, 'color': arraySource[i].color}">
+            <mat-checkbox class="list-item" [checked]="checkAllItens" (change)="checkItem(i, $event)" formControlName="deleteField"></mat-checkbox> {{testingThisShit}}
+          </td>
+          <td *ngFor="let item of data; let j = index" [ngStyle]="{'background-color': arraySource[i].backgroundColor, 'color': arraySource[i].color}">
+            <span> {{ item }} </span>
+          </td>
+          <td class="list-item-actions" *ngIf="params.list.edit" [ngStyle]="{'background-color': arraySource[i].backgroundColor, 'color': arraySource[i].color}">
+            <a *ngIf="params.list.edit" (click)="onClickEdit(params.list.edit.route, arraySource[i][params.list.edit.param])"><mat-icon>edit</mat-icon></a>
+          </td>
+        </tr>
+        
+      </table>
+       <div *ngIf="arraySourceSearch.length < 1"> <br> <p class="text-fix" *ngIf="!isLoadingList">Não existe dados na lista.</p> <br> </div> 
+    </form>
+    <!--List area: end -->
+
+    <!--Action toolbar area: start -->
+    <div class="clear-both"></div>
+     <mat-toolbar class="w100p" *ngIf="!isLoadingList && params.actionToolbar">
+      <form [formGroup]="listController" class="w100p">
+        <div class="div-form-pattern float-left">
+          <!-- Select the limit view page -->
+          <mat-select placeholder="{{placeholderToRowsPerPage}}" formControlName="row"
+          (change)="onChangeLimit($event)" *ngIf="arraySourceSearch.length > 0">
+            <mat-option *ngFor="let row of params.actionToolbar.rows" [value]="row">
+              {{row}}
+            </mat-option>
+          </mat-select>
+        </div>
+        
+        <div class="div-form-pattern float-right">
+          <div class="div-form-pattern float-left">
+            <a><mat-icon (click)="onClickPage('subtract')" *ngIf="pageCurrent != 1">keyboard_arrow_left</mat-icon></a>
+          </div>
+
+          <div class="div-form-pattern float-left">
+            <a><mat-icon (click)="onClickPage('add')" *ngIf="pageCurrent < pageTotal">keyboard_arrow_right</mat-icon></a>
+          </div>
+
+          <div class="div-form-pattern float-left mt10" *ngIf="arraySourceSearch.length > 0">
+            <span *ngIf="!isMobile">{{pageCurrent}} {{placeholderToPage}} {{pageTotal}}</span>
+          </div>
+        </div>
+
+        <div class="clear-both"></div>
+      </form>
+    </mat-toolbar>
+    <!--Action toolbar area: end -->
+  </mat-card>
+</div>
+  
+<div *ngIf="errors.length > 0">
+  <div *ngFor="let error of errors">
+    <mat-error>
+      {{error.message}}
+    </mat-error>
+  </div>
+</div>

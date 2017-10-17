@@ -1,0 +1,39 @@
+.menu-icon {
+    background: #37474f;
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    z-index: 300;
+}
+
+#sidenav {
+    background: #37474f;
+    color: #fff;
+    height: 100%;
+    left: 0;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    width: 250px;
+    z-index: 200;
+}
+
+#transparent-back {
+    background: #37474f;
+    height: 100%;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    opacity: 0.6;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+#username {
+    font-size: 20px;
+    font-weight: bolder;
+}

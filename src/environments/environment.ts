@@ -4,5 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  urlToApi: "https://sgo-api.al.senai.br/api/",
+  //urlToApi: "http://10.83.3.191/api/",
+  urlToOauthToken: "https://sgo-api.al.senai.br/oauth/token"
 };

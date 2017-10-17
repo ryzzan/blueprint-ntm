@@ -1,0 +1,59 @@
+<mat-card id="ntm-login">
+  <div class="div-title">
+    <div class="float-left div-form-pattern mr20">
+        <img src="./../assets/img/sesi-logo-toolbar.png" alt="" id="senai-icon" class="w160">
+    </div>
+
+    <div class="float-left div-form-pattern mr20 h2-title">
+      <h2>Acesso</h2>
+    </div>
+    <div class="float-right mt15">
+      <mat-icon>help</mat-icon>
+    </div>
+  </div>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+  *ngIf="errors.length < 1">
+    <mat-card-content>
+      <div class="float-left h70">
+        <div class="float-left div-form-pattern">
+          <mat-icon class="mat-18">person</mat-icon>
+        </div>
+        <div class="float-left mr10 div-form-pattern w290">
+          <mat-input-container>
+              <input mdInput formControlName="email" type="text"
+              placeholder="E-mail" maxlength="191">
+          </mat-input-container>
+        </div>
+      </div>
+
+      <div class="float-left h70">
+        <div class="float-left div-form-pattern">
+          <mat-icon class="mat-18">lock_open</mat-icon>
+        </div>
+        <div class="float-left  div-form-pattern w290">
+          <mat-input-container>
+            <input mdInput formControlName="password" type="password"
+            placeholder="Password" maxlength="191">
+          </mat-input-container>
+        </div>
+      </div>
+      <div class="clear-both"></div>
+    </mat-card-content>
+
+    <mat-card-actions>
+
+      <button style="margin-right:16px;" mat-raised-button type="submit"
+      color="primary" [disabled]="!loginForm.valid">
+        Entrar
+      </button>
+
+      <a mat-button (click)="onForgotPassword()"
+      *ngIf="params.forgotPasswordRoute">Esqueci a senha</a>
+    </mat-card-actions>  
+
+  </form>
+
+  <div *ngFor="let error of errors">
+    <mat-error>{{ error.cod }} - {{ error.message }}</mat-error>
+  </div>
+</mat-card>

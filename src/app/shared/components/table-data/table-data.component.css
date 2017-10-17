@@ -1,0 +1,134 @@
+mat-card {
+    margin: 0;
+    padding: 0;
+}
+
+/deep/ .mat-checkbox-inner-container {
+  background: #fff;
+  border-radius: 3px; 
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    border-top: 1px #EEEEEE solid;
+    padding: 15px;
+}
+
+th mat-icon {
+    color: #BDBDBD;
+}
+
+th a mat-icon {
+    vertical-align: middle;
+}
+
+th {
+    border: none;
+    color: #BDBDBD;
+    padding: 15px;
+}
+
+.text-fix{
+    font-size: 16px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+.dropdown-table-pattern{
+    height: 698;
+    width: 320;
+}
+
+.search-pattern{
+    vertical-align: middle;
+    font-size: 18px;
+    font-weight: normal;
+    max-width: 100px;
+}
+.font-pattern{
+    text-align: left;
+    font-weight: normal;
+}
+
+.list-item:hover {
+    background: #EEEEEE;
+}
+
+.list-item span {
+    margin-right: 15px;
+}
+
+.list-item-actions {
+    right: 0;
+    text-align: right;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+#list-controllers {
+    font-size: 16px;
+    width: 100%;
+}
+
+#list-controllers mat-icon {
+    font-size: 16px;
+}
+
+#list-item-checkbox {
+    left: 0;
+    text-align: left;
+    width: 10px;
+}
+
+#page-area {
+    float: left;
+    padding-left: 40%;
+    width: 50%;
+}
+
+#row-area {
+    float: left;
+    /*margin-left: -10px;*/
+    width: 50%;
+    height: 64px;
+}
+
+#toolbar-action {
+    font-size: 20px;
+    font-weight: bolder;
+    right: 0;
+    margin: 0;
+    text-align: right;
+    width: 65%;
+}
+
+#toolbar-spacer {
+    font-size: 20px;
+    font-weight: bolder;
+    left: 0;
+    margin: 0;
+    width: 10%;
+}
+
+#toolbar-title {
+    font-size: 19px;
+    font-weight: bolder;
+    left: 0;
+    margin: 0;
+    width: 25%;
+}
+
+@media only screen and (max-device-width: 320px) {
+    #toolbar-action {
+        font-size: 20px;
+        font-weight: bolder;
+        right: 0;
+        margin-right: 0;
+        width: 65%;
+    }
+}
