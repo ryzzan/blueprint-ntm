@@ -43,7 +43,7 @@ export class ProfileGroupComponent implements OnInit {
         this.crud.read({
           route: 'profiles-groups',
           order: ['id', 'desc'],
-          search: [{
+          where: [{
             where: 'id',
             value: this.paramToSearch.replace(':', '')
           }]
@@ -75,7 +75,8 @@ export class ProfileGroupComponent implements OnInit {
       toolbar: {
         title: "Lista de grupos de perfis",
         delete: [{
-          route: '/main/profile-group',
+          routeToApi: "profiles-groups",
+          routeAfterDelete: '/main/profile-group',
           param: 'id'
         }],
         search: true

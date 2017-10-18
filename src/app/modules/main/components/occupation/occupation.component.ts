@@ -51,7 +51,7 @@ export class OccupationComponent implements OnInit {
         this.crud.read({
           route: 'occupations',
           order: ['id', 'desc'],
-          search: [{
+          where: [{
             where: 'id',
             value: this.paramToSearch.replace(':', '')
           }]
@@ -121,7 +121,8 @@ export class OccupationComponent implements OnInit {
       toolbar: {
         title: "Lista de ocupações",
         delete: [{
-          route: '/main/occupation',
+          routeToApi: "occupations",
+          routeAfterDelete: '/main/occupation',
           param: 'id'
         }],
         search: true

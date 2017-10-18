@@ -41,7 +41,7 @@ export class TechAreaComponent implements OnInit {
         this.submitToUpdate = true;
         this.title = "Alterar Dados de Área Tecnológica";
         this.submitButton = "Atualizar";
-        console.log(this.paramToSearch)
+        
         this.crud.read({
           route: 'occupations-groups',
           order: ['id', 'desc'],
@@ -77,7 +77,8 @@ export class TechAreaComponent implements OnInit {
       toolbar: {
         title: "Lista de Áreas Tecnológicas",
         delete: [{
-          route: '/main/tech-area',
+          routeToApi: "occupations-groups",
+          routeAfterDelete: '/main/tech-area',
           param: 'id'
         }],
         search: true

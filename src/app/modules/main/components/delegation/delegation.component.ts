@@ -50,7 +50,7 @@ export class DelegationComponent implements OnInit {
         this.crud.read({
           route: 'delegations',
           order: ['id', 'desc'],
-          search: [{
+          where: [{
             where: 'id',
             value: this.paramToSearch.replace(':', '')
           }],
@@ -93,10 +93,11 @@ export class DelegationComponent implements OnInit {
       toolbar: {
         title: "Lista de delegações",
         delete: [{
-          route: '/main/delegation',
+          routeToApi: "delegations",
+          routeAfterDelete: '/main/delegation',
           param: 'id'
         }],
-        search: true
+        search: "id" //pk
       },
       list: {
         route: "delegations",

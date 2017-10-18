@@ -50,7 +50,7 @@
           </tr>
           <tr class="list-item" *ngFor="let data of arraySourceSearch; let i = index">
             <td *ngIf="params.toolbar && params.toolbar.delete" [ngStyle]="{'background-color': arraySource[i].backgroundColor, 'color': arraySource[i].color}">
-              <mat-checkbox class="list-item" [checked]="checkAllItens" (change)="checkItem(i, $event)" formControlName="deleteField"></mat-checkbox> {{testingThisShit}}
+              <mat-checkbox class="list-item" [checked]="checkAllItens" (change)="checkItem(i, $event)" formControlName="deleteField"></mat-checkbox>
             </td>
             <td *ngFor="let item of data; let j = index" [ngStyle]="{'background-color': arraySource[i].backgroundColor, 'color': arraySource[i].color}">
               <span> {{ item }} </span>
@@ -69,12 +69,10 @@
     <!--Action toolbar area: start -->
     <div class="clear-both"></div>
     <div>
-      <mat-toolbar class="w100p" *ngIf="!isLoadingList && params.actionToolbar">
-        
-          
+      <mat-toolbar class="w100p" *ngIf="!isLoadingList && params.actionToolbar && arraySourceSearch.length > 0">
         <form [formGroup]="listController" class="w100p">
 
-        <div class="div-foot-pattern float-left">
+          <div class="div-foot-pattern float-left">
             <!-- Select the limit view page -->
             <mat-form-field style="width: 130px;">
               <mat-select formControlName="row" placeholder="{{placeholderToRowsPerPage}}"
@@ -84,14 +82,13 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            </div>
+          </div>
               
           
           <div class="div-foot-pattern float-right">
-
             <div class="div-foot-pattern float-right">
-                <a><mat-icon (click)="onClickPage('add')" *ngIf="pageCurrent < pageTotal">keyboard_arrow_right</mat-icon></a>
-              </div>
+              <a><mat-icon (click)="onClickPage('add')" *ngIf="pageCurrent < pageTotal">keyboard_arrow_right</mat-icon></a>
+            </div>
               
             <div class="div-foot-pattern float-right">
               <a><mat-icon (click)="onClickPage('subtract')" *ngIf="pageCurrent != 1">keyboard_arrow_left</mat-icon></a>

@@ -32,14 +32,15 @@ export class DeleteConfirmComponent implements OnInit {
   delete() {
     this.crud
     .delete({
-      route: this.data.route,
+      route: this.data.routeToApi,
       paramToDelete: this.data.paramToDelete
     })
     .then(() => {
+      console.log(this.data.routeToApi)
       let array: any;
       let string: string;
 
-      this.router.navigate(this.data.route);
+      this.router.navigate([this.data.routeAfterDelete]);
 
       if(this.data.paramToDelete.length < 2) { 
         array= [1, "item", "apagado"];

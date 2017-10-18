@@ -203,15 +203,15 @@ export class TableDataComponent implements OnInit {
         if(this.searchForm.get('searchSelect').value) {
           this.searchValue.push({
             where: this.searchForm.get('searchSelect').value,
-            value: this.searchForm.get('search').value
+            value: this.searchForm.get('search').value,
+            pKToCheck: this.params.toolbar.search
           })
-
-          console.log(this.searchValue)
         } else {
           for(let lim = this.params.list.show.length, i = 0; i < lim; i++) {
             this.searchValue.push({
               where: this.params.list.show[i],
-              value: this.searchForm.get('search').value
+              value: this.searchForm.get('search').value,
+              pKToCheck: this.params.toolbar.search
             })
           }
         }
@@ -265,6 +265,7 @@ export class TableDataComponent implements OnInit {
     }
 
     this.checkedItem = false;
+    this.checkAllItens = false;
   }
 
   checkItem = (index, e) => {
@@ -308,17 +309,22 @@ export class TableDataComponent implements OnInit {
     let dialogRef = this.dialog.open(DeleteConfirmComponent, {
       width: '250px',
       data: { 
-        route: this.params.list.route,
+        routeToApi: this.params.toolbar.delete[0].routeToApi,
+        routeAfterDelete: this.params.toolbar.delete[0].routeAfterDelete,
         paramToDelete: itensToDeleteIds
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {      
       let array: any;
       let string: string;
 
-      this.readData();
+      if(result == undefined) {
+        this.pageCurrent = 1;
+      }
+
       this.uncheckAll();
+      this.readData();
     });
   }
   
@@ -450,6 +456,7 @@ export class TableDataComponent implements OnInit {
    */
   onChangeLimit = (event) => {
     this.params.list.limit = event.value;
+    this.pageCurrent = 1;
 
     this.readData();
   }

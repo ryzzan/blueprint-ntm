@@ -43,7 +43,7 @@ export class InstitutionComponent implements OnInit {
         this.crud.read({
           route: 'institutions',
           order: ['id', 'desc'],
-          search: [{
+          where: [{
             where: 'id',
             value: this.paramToSearch.replace(':', '')
           }]
@@ -75,7 +75,8 @@ export class InstitutionComponent implements OnInit {
       toolbar: {
         title: "Lista de instituições",
         delete: [{
-          route: '/main/institution',
+          routeToApi: "institutions",
+          routeAfterDelete: '/main/institution',
           param: 'id'
         }],
         search: true

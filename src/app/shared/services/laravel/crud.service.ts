@@ -103,29 +103,24 @@ export class CrudService {
 
       if(params.search) {
         if(params.search[0]) {
-          console.log(params.search[0].where)          
           setGet = "?";
 
           if(params.search.length == 1) {
             search = "&like="+params.search[0].where+","+params.search[0].value;
           }
-
-          if(params.search.length > 1) {
-            search = "&like";
-          }
         }
+      }
 
-        if(params.where) {
-          setGet = "?";
-          
-          if(params.where.length == 1) {
-            where = "&where["+params.where[0].where+"]="+params.where[0].value;
-          };
-
-          if(params.where.length > 1) {
-            where = "&where";
-          };
-        }
+      if(params.where) {
+        setGet = "?";
+        
+        if(params.where.length == 1) {
+          where = "&where["+params.where[0].where+"]="+params.where[0].value;
+        };
+        
+        if(params.where.length > 1) {
+          where = "&where";
+        };
       }
 
       if(params.page) {
@@ -147,58 +142,150 @@ export class CrudService {
       this.optionsToAuth = new RequestOptions({
         'headers': this.headersToAuth
       })
+      
+      if(params.search) {
+        let arrayObj = [];
+        if(params.search.length > 1) { //searching multiples fields
+          setGet = "?";
 
-      this.http.get(
-        environment.urlToApi + params.route + setGet + page +  show + hide + limit + order + search,
-        this.optionsToAuth
-      )
-      .subscribe(res => {
-        obj = JSON.parse(res['_body']);
-        
-        if(params.route != 'user') {
-          objFiltered = obj.data;
-        } else {
-          objFiltered = obj;
-        }
-        
-        if(obj.total) {
-          objFiltered.total = obj.total;
-        }
-        
-        if(params.show) {
-          if(obj.data) {
-            objFilteredTemp = obj.data;
-          } else {
-            objFilteredTemp = obj;
+          for(let lim = params.search.length, i =0; i < lim; i++) {
+            search = "&like="+params.search[i].where+","+params.search[i].value;
+            
+            this.http.get(
+              environment.urlToApi + params.route + setGet + page +  show + hide + limit + order + search + where,
+              this.optionsToAuth
+            )
+            .subscribe(res => {
+              obj = JSON.parse(res['_body']);
+              
+              if(params.route != 'user') {
+                objFiltered = obj.data;
+              } else {
+                objFiltered = obj;
+              }
+              
+              if(obj.total) {
+                objFiltered.total = obj.total;
+              }
+
+              if(params.show) {
+                if(obj.data) {
+                  objFilteredTemp = obj.data;
+                } else {
+                  objFilteredTemp = obj;
+                }
+      
+                objFiltered = [];
+                
+                for(let lim = objFilteredTemp.length, i =0; i < lim; i++) {
+                  let temp = {};
+      
+                  for(let j = 0; j < params.show.length; j++) {
+                    temp[params.show[j]] = objFilteredTemp[i][params.show[j]];
+                  }
+      
+                  objFiltered.push(temp);
+                }
+      
+                obj = objFiltered;
+      
+                resolve({
+                  obj
+                });
+              } else {
+                if(objFiltered) {
+                  obj = objFiltered;
+                }
+
+                if(obj.length > 0) {
+                  for(let lim2 = obj.length, j =0; j < lim2; j++) {
+                    if(arrayObj.length > 0) {
+                      let tempCheck = true;
+                      for(let lim3 = arrayObj.length, k = 0; k < lim3; k++) {
+                        if(arrayObj[k][0][params.search[i].pKToCheck] == arrayObj[j][0][params.search[i].pKToCheck]) {
+                          tempCheck = true;
+                        }
+                      }
+
+                      if(!tempCheck) {
+                        arrayObj.push(obj)
+                      }
+                    } else {
+                      arrayObj.push(obj)
+                    }
+                  }
+                }
+                /*if(obj.length > 0) {
+                  if(params.search[i].pKToCheck) {
+
+                  }
+                  arrayObj.push(obj);
+                }*/
+                if((lim-1) == i) {
+                  console.log(arrayObj)
+                  obj = arrayObj[0];
+                  resolve({
+                    obj
+                  });
+                }
+              }
+            })
           }
-
-          objFiltered = [];
-          
-          for(let lim = objFilteredTemp.length, i =0; i < lim; i++) {
-            let temp = {};
-
-            for(let j = 0; j < params.show.length; j++) {
-              temp[params.show[j]] = objFilteredTemp[i][params.show[j]];
+        } else {
+          console.log(206)
+          this.http.get(
+            environment.urlToApi + params.route + setGet + page +  show + hide + limit + order + search + where,
+            this.optionsToAuth
+          )
+          .subscribe(res => {
+            obj = JSON.parse(res['_body']);
+            
+            if(params.route != 'user') {
+              objFiltered = obj.data;
+            } else {
+              objFiltered = obj;
             }
-
-            objFiltered.push(temp);
-          }
-
-          obj = objFiltered;
-
-          resolve({
-            obj
-          });
-        } else {
-          if(objFiltered) {
-            obj = objFiltered;
-          }
-          
-          resolve({
-            obj
-          });
+            
+            if(obj.total) {
+              objFiltered.total = obj.total;
+            }
+            
+            if(params.show) {
+              if(obj.data) {
+                objFilteredTemp = obj.data;
+              } else {
+                objFilteredTemp = obj;
+              }
+    
+              objFiltered = [];
+              
+              for(let lim = objFilteredTemp.length, i =0; i < lim; i++) {
+                let temp = {};
+    
+                for(let j = 0; j < params.show.length; j++) {
+                  temp[params.show[j]] = objFilteredTemp[i][params.show[j]];
+                }
+    
+                objFiltered.push(temp);
+              }
+    
+              obj = objFiltered;
+    
+              resolve({
+                obj
+              });
+            } else {
+              if(objFiltered) {
+                obj = objFiltered;
+              }
+              
+              resolve({
+                obj
+              });
+            }
+          })
         }
-      })
+      }
     } else {
       reject({
         cod: "p-01",
@@ -268,6 +355,7 @@ export class CrudService {
     }
 
     for(let lim = paramToDelete.length, i = 0; i < lim; i++) {
+      console.log(this.url+route+"/"+paramToDelete[i])
       this.http
       .delete(
         this.url+route+"/"+paramToDelete[i]
