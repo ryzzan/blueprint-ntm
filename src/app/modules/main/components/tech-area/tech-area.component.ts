@@ -110,13 +110,14 @@ export class TechAreaComponent implements OnInit {
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
         })
+        
+        this.makeList();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
         })
       })
 
-      this.makeList();
       this.router.navigate(['/main/tech-area']);
     } else {
       let params = {
@@ -129,15 +130,14 @@ export class TechAreaComponent implements OnInit {
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
         })
+
+        this.makeList();
+        this.occupationsGroupsForm.reset();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
         })
       })
-
-      this.occupationsGroupsForm.get('occupation_group_name').setValue(null);
-
-      this.makeList();
       
       this.router.navigate(['/main/tech-area']);
     }

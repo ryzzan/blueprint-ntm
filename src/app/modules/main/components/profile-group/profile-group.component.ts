@@ -108,13 +108,14 @@ export class ProfileGroupComponent implements OnInit {
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
         })
+        
+        this.makeList();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
         })
       })
 
-      this.makeList();
   
       this.router.navigate(['/main/profile-group']);
     } else {
@@ -128,6 +129,8 @@ export class ProfileGroupComponent implements OnInit {
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
         })
+        
+        this.makeList();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
@@ -136,7 +139,7 @@ export class ProfileGroupComponent implements OnInit {
 
       this.profileGroupForm.get('group_profile_name').setValue(null);
 
-      this.makeList();
+      this.router.navigate(['/main/profile-group']);
     }
   }
 }

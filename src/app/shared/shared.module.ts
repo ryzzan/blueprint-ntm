@@ -70,7 +70,8 @@ import { CrudService } from './services/laravel/crud.service';
     MatSlideToggleModule,
     MatToolbarModule,
     ScheduleComponent,
-    TableDataComponent
+    TableDataComponent,
+    TextMaskModule
   ],
   declarations: [
     DeleteConfirmComponent,

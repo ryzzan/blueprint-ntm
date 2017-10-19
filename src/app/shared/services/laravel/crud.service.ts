@@ -143,7 +143,7 @@ export class CrudService {
         'headers': this.headersToAuth
       })
       
-      if(params.search) {
+      if(params.search) { 
         let arrayObj = [];
         if(params.search.length > 1) { //searching multiples fields
           setGet = "?";
@@ -232,7 +232,6 @@ export class CrudService {
             })
           }
         } else {
-          console.log(206)
           this.http.get(
             environment.urlToApi + params.route + setGet + page +  show + hide + limit + order + search + where,
             this.optionsToAuth
@@ -285,6 +284,58 @@ export class CrudService {
             }
           })
         }
+      } else {
+        this.http.get(
+          environment.urlToApi + params.route + setGet + page +  show + hide + limit + order + search + where,
+          this.optionsToAuth
+        )
+        .subscribe(res => {
+          obj = JSON.parse(res['_body']);
+          
+          if(params.route != 'user') {
+            objFiltered = obj.data;
+          } else {
+            objFiltered = obj;
+          }
+          
+          if(obj.total) {
+            objFiltered.total = obj.total;
+          }
+          
+          if(params.show) {
+            if(obj.data) {
+              objFilteredTemp = obj.data;
+            } else {
+              objFilteredTemp = obj;
+            }
+  
+            objFiltered = [];
+            
+            for(let lim = objFilteredTemp.length, i =0; i < lim; i++) {
+              let temp = {};
+  
+              for(let j = 0; j < params.show.length; j++) {
+                temp[params.show[j]] = objFilteredTemp[i][params.show[j]];
+              }
+  
+              objFiltered.push(temp);
+            }
+  
+            obj = objFiltered;
+  
+            resolve({
+              obj
+            });
+          } else {
+            if(objFiltered) {
+              obj = objFiltered;
+            }
+            
+            resolve({
+              obj
+            });
+          }
+        })
       }
     } else {
       reject({

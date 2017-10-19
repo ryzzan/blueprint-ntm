@@ -123,10 +123,6 @@ export class DelegationComponent implements OnInit {
     };
   }
 
-  onChangeForeignDelegation = (events) => {
-    this.delegationForm.get('is_foreign').setValue(events.checked);
-  }
-
   onDelegationSubmit = () => {
     if(this.submitToUpdate) {
       let params = {
@@ -140,37 +136,47 @@ export class DelegationComponent implements OnInit {
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
         })
+
+        this.makeList();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
         })
       })
-  
-      this.makeList();
-      
+
       this.router.navigate(['/main/delegation']);
     } else {
+      let objTemp = this.delegationForm.value;
+      objTemp.competition_id = 1;
+
       let params = {
         route: 'delegations',
         objectToCreate: this.delegationForm.value
       };
-
+      
       this.crud.create(params)
       .then(res => {
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
         })
+
+        this.delegationForm = new FormGroup({
+          'competition_id': new FormControl(1),
+          'initials': new FormControl(null,[Validators.maxLength(5),Validators.required]),
+          'delegation_name': new FormControl(null,[Validators.maxLength(191),Validators.required]),
+          'is_foreign': new FormControl(false)
+        });
+  
+        Object.keys(this.delegationForm.controls).forEach(key => {
+          this.delegationForm.controls[key].setErrors(null)
+        });
+
+        this.makeList();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
         })
       })
-
-      this.delegationForm.get('initials').setValue(null);
-      this.delegationForm.get('delegation_name').setValue(null);
-      this.delegationForm.get('is_foreign').setValue(false);
-
-      this.makeList();
     }
   }
 }

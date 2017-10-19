@@ -179,13 +179,13 @@ export class OccupationComponent implements OnInit {
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
         })
+
+        this.makeList();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
         })
       })
-      
-      this.makeList();
       
       this.router.navigate(['/main/occupation']);
     } else {
@@ -193,32 +193,23 @@ export class OccupationComponent implements OnInit {
         route: 'occupations',
         objectToCreate: this.occupationForm.value
       };
-
+      
       this.crud.create(params)
       .then(res => {
-        this.makeList();
-
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
-        })
+        });
+
+        this.makeList();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
-        })
+        });
       })
 
-      this.occupationForm.get('competition_id').setValue(null);
-      this.occupationForm.get('occupation_name').setValue(null);
-      this.occupationForm.get('occupation_number').setValue(null);
-      this.occupationForm.get('number_participants').setValue(null);
-      this.occupationForm.get('age_limit').setValue(null);
-      this.occupationForm.get('occupation_group_id').setValue(null);
-      //this.occupationForm.get('group_code_forum').setValue(null);
-      this.occupationForm.get('nickname').setValue(null);
-      this.occupationForm.get('is_demonstration').setValue(null);
-      this.occupationForm.get('is_disability').setValue(null);
-      this.occupationForm.get('host_id').setValue(null);
-      this.occupationForm.get('institution_id').setValue(null);
+      this.occupationForm.reset();
+      
+      this.router.navigate(['/main/occupation']);
     }
   }
 }

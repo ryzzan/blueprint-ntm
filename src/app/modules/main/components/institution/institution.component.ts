@@ -39,7 +39,7 @@ export class InstitutionComponent implements OnInit {
         this.submitToUpdate = true;
         this.title = "Alterar Dados de Instituição";
         this.submitButton = "Atualizar";
-
+        
         this.crud.read({
           route: 'institutions',
           order: ['id', 'desc'],
@@ -47,8 +47,10 @@ export class InstitutionComponent implements OnInit {
             where: 'id',
             value: this.paramToSearch.replace(':', '')
           }]
-        }).then(res => {
-          
+        })
+        .catch(err => console.log(err))
+        .then(res => {
+          console.log(res)
           let obj = res['obj'][0];
 
           this.institutionForm.get('institution_name').setValue(obj.institution_name);
@@ -108,14 +110,14 @@ export class InstitutionComponent implements OnInit {
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
         })
+
+        this.makeList();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
         })
       })
-      
-      this.makeList();
-  
+
       this.router.navigate(['/main/institution']);
     } else {
       let params = {
@@ -128,6 +130,8 @@ export class InstitutionComponent implements OnInit {
         this.matsnackbar.open(res['message'], '', {
           duration: 2000
         })
+
+        this.makeList();
       }, rej => {
         this.matsnackbar.open(rej['message'], '', {
           duration: 3000
@@ -135,8 +139,8 @@ export class InstitutionComponent implements OnInit {
       })
 
       this.institutionForm.get('institution_name').setValue(null);
-
-      this.makeList();
+      
+      this.router.navigate(['/main/institution']);
     }
   }
 }

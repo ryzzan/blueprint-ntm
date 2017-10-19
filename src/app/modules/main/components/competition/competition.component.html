@@ -1,3 +1,168 @@
-<p>
-  competition works!
-</p>
+<mat-card class="mt20">
+  <h2><b>{{title}}</b></h2>
+  
+  <hr>
+
+  <form (ngSubmit)="onCompetitionSubmit()" [formGroup]="competitionForm">
+    <div class="float-left">
+      <div class="float-left div-form-pattern">
+        <mat-icon class="mat-18">stars</mat-icon>
+      </div>
+      <div class="float-left mr10 div-form-pattern">
+        <mat-input-container>
+          <input matInput type="text" placeholder="Nome da Competição"
+          formControlName="name">
+        </mat-input-container>
+      </div>
+    </div>
+    
+    <div class="float-left mr10 div-form-pattern">
+      <mat-slide-toggle (change)="onEnableCountDown($event)" [checked]="hasCountDownTimer"></mat-slide-toggle>
+      Habilitar Contador Regressivo
+    </div>
+    
+    <div class="float-left mr10 div-form-pattern">
+      <mat-slide-toggle (change)="onAllowMultipleTeams($event)" [checked]="hasMultipleTeams"></mat-slide-toggle>
+      Permitir Múltiplas Equipes da Mesma Delegação nas Ocupações
+    </div>
+
+    <div class="clear-both"></div>
+
+    <fieldset>
+      <legend>Cidades Sede</legend>
+
+      <div class="float-left">
+        <div class="float-left div-form-pattern">
+          <mat-icon class="mat-18">location_on</mat-icon>
+        </div>
+        <div class="float-left mr10 div-form-pattern">
+          <mat-input-container>
+            <input matInput type="text" placeholder="Nome da Cidade Sede" 
+            formControlName="host_name">
+          </mat-input-container>
+        </div>
+      </div>
+
+      <div class="float-left">
+        <div class="float-left div-form-pattern">
+          <mat-icon class="mat-18">date_range</mat-icon>
+        </div>
+        <div class="float-left mr10 div-form-pattern">
+          <mat-input-container>
+            <input matInput formControlName="initialDate" type="text"
+            [textMask]="{mask: mask.date}"
+            placeholder="Data Inicial">
+          </mat-input-container>
+          <!--<mat-form-field>
+            <input matInput [matDatepicker]="cityDateStartPicker" 
+            placeholder="Data Inicial" 
+            formControlName="initialDate">
+            <mat-datepicker-toggle matSuffix [for]="cityDateStartPicker"></mat-datepicker-toggle>
+            <mat-datepicker #cityDateStartPicker></mat-datepicker>
+          </mat-form-field>-->
+        </div>
+      </div>
+
+      <div class="float-left">
+        <div class="float-left div-form-pattern">
+          <mat-icon class="mat-18">date_range</mat-icon>
+        </div>
+        <div class="float-left mr10 div-form-pattern">
+          <mat-input-container>
+            <input matInput formControlName="endDate" type="text"
+            [textMask]="{mask: mask.date}"
+            placeholder="Data de Término">
+          </mat-input-container>
+          <!--<mat-form-field>
+            <input matInput [matDatepicker]="cityDateEndPicker" 
+            placeholder="Data de Término" 
+            formControlName="endDate">
+            <mat-datepicker-toggle matSuffix [for]="cityDateEndPicker"></mat-datepicker-toggle>
+            <mat-datepicker #cityDateEndPicker></mat-datepicker>
+          </mat-form-field>-->
+        </div>
+      </div>
+      
+      <div class="float-right mr10 div-form-pattern">
+        <button mat-mini-fab type="button" color="primary"
+        (click)="onAddCity()"
+        [disabled]="competitionForm.get('host_name').value == null"><mat-icon class="mat-18">add</mat-icon></button>
+      </div>
+      <div class="clear-both"></div>
+
+      <div formGroupName="hosts">
+        <div *ngFor="let city of competitionForm.get('hosts').value; let i = index;">
+          <div [formGroupName]="i" [ngStyle]="{'background-color': city._backgroundColor}">
+            <div class="float-left">
+              <div class="float-left div-form-pattern">
+                <mat-icon class="mat-18">location_on</mat-icon>
+              </div>
+              
+              <div class="float-left mr10 div-form-pattern">
+                <mat-input-container>
+                  <input matInput type="text" placeholder="Nome da Cidade Sede" 
+                  formControlName="host_name">
+                </mat-input-container>
+              </div>
+            </div> 
+      
+            <div class="float-left">
+              <div class="float-left div-form-pattern">
+                <mat-icon class="mat-18">date_range</mat-icon>
+              </div>
+              <div class="float-left mr10 div-form-pattern">
+                <mat-input-container>
+                  <input matInput formControlName="initialDate" type="text"
+                  [textMask]="{mask: mask.date}"
+                  placeholder="Data Inicial">
+                </mat-input-container>
+                <!--<mat-form-field>
+                  <input matInput [matDatepicker]="city._matDatePickerId1?.value" 
+                  placeholder="Data Inicial" 
+                  formControlName="initialDate">
+                </mat-form-field>-->
+              </div>
+            </div>
+      
+            <div class="float-left">
+              <div class="float-left div-form-pattern">
+                <mat-icon class="mat-18">date_range</mat-icon>
+              </div>
+              <div class="float-left mr10 div-form-pattern">
+                <!--<mat-form-field>
+                  <input matInput [matDatepicker]="city._matDatePickerId2?.value" 
+                  placeholder="Data de Término" 
+                  formControlName="endDate">
+                  <mat-datepicker-toggle matSuffix [for]="city._matDatePickerId2"></mat-datepicker-toggle>
+                  <mat-datepicker #{{city._matDatePickerId2}}></mat-datepicker>
+                </mat-form-field>-->
+                <mat-input-container>
+                  <input matInput formControlName="endDate" type="text"
+                  [textMask]="{mask: mask.date}"
+                  placeholder="Data de Término">
+                </mat-input-container>
+              </div>
+            </div>
+
+            <div class="float-right mr10 div-form-pattern">
+              <button mat-mini-fab type="button" color="warn"
+              (click)="onRemoveCity(i)">
+                <mat-icon>remove</mat-icon>
+              </button>
+            </div>
+
+            <div class="clear-both"></div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <mat-card-actions>
+      <button mat-raised-button type="submit" color="primary" [disabled]="competitionForm.invalid">{{submitButton}}</button>
+    </mat-card-actions>
+  </form>
+</mat-card>
+
+<div class="list mt20">
+  <ntm-table-data [params]="paramsToTableData"></ntm-table-data>
+</div>

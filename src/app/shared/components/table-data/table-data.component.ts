@@ -14,7 +14,7 @@ import { CrudService } from './../../services/laravel/crud.service';
   templateUrl: './table-data.component.html',
   styleUrls: ['./table-data.component.css']
 })
-export class TableDataComponent implements OnInit {
+export class TableDataComponent implements OnInit, OnChanges {
   @Input() params;
 
   arrayHeader: any = []; 
@@ -179,6 +179,8 @@ export class TableDataComponent implements OnInit {
     } else {
       this.isMobile = false;
     }
+
+    this.readData();
   }
 
   /**
@@ -325,6 +327,7 @@ export class TableDataComponent implements OnInit {
 
       this.uncheckAll();
       this.readData();
+      this.checkAllController = false;
     });
   }
   
