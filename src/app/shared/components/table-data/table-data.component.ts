@@ -430,8 +430,14 @@ export class TableDataComponent implements OnInit, OnChanges {
       limit: this.params.list.limit,
       order: this.params.list.order,
       page: this.pageCurrent,
-      search: this.searchValue
+      search: this.searchValue,
+      where: [{
+        where: 'competition_id',
+        value: 1
+      }]
     }
+
+    let checkWhere;
 
     this.isLoadingList = true;
 

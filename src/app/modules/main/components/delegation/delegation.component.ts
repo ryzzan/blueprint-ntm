@@ -30,6 +30,8 @@ export class DelegationComponent implements OnInit {
   isForeign: boolean = false;
   /*update properties specific end*/
 
+  competitionSelect: any;
+
   constructor(
     private crud: CrudService,
     private matsnackbar: MatSnackBar,
@@ -85,6 +87,15 @@ export class DelegationComponent implements OnInit {
       'is_foreign': new FormControl(false)
     });
 
+    this.crud.read({
+      route: 'competitions',
+      order: ['id', 'desc'],
+      page: 1
+    }).then(res => {
+      this.competitionSelect = res['obj'];
+      console.log(this.competitionSelect)
+    })
+
     this.makeList();
   }
 
@@ -107,6 +118,10 @@ export class DelegationComponent implements OnInit {
         edit: {route: '/main/delegation/', param: 'id'},
         page: 1,
         source: true,
+        where: [{
+          field:'competition_id',
+          value: 1
+        }],
         changeValue: [{
           field: 'is_foreign',
           fieldValue: 0,
@@ -166,9 +181,12 @@ export class DelegationComponent implements OnInit {
           'delegation_name': new FormControl(null,[Validators.maxLength(191),Validators.required]),
           'is_foreign': new FormControl(false)
         });
+
+        console.log(this.delegationForm);
   
         Object.keys(this.delegationForm.controls).forEach(key => {
           this.delegationForm.controls[key].setErrors(null)
+          console.log(174);
         });
 
         this.makeList();

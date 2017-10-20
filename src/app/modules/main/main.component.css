@@ -6,10 +6,26 @@ mat-toolbar {
     z-index: 100;
 }
 
+#competition {
+    position: relative;
+    margin-left: 0;
+    top: 80px;
+    width: 200px;
+    float: left;
+}
+
+#countdown {
+    position: relative;
+    margin-left: 0;
+    top: 80px;
+    width: 200px;
+    float: right;
+}
+
 #router-outlet {
     position: relative;
     margin: 0 auto;
-    top: 60px;
+    top: 80px;
 }
 
 #senai-icon {
