@@ -1,0 +1,9 @@
+<div *ngIf="errors.length > 0">
+  <mat-error *ngFor="let error of errors">
+    {{error.message}}
+  </mat-error>
+</div>
+
+<div *ngIf="errors.length < 1">
+  {{left}} {{day}} {{dayString}} {{hour}} {{hourString}} {{minute}} {{minuteString}}
+</div>
