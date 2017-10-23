@@ -8,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 /**
  * Components
  */
+import { CountdownComponent } from './components/countdown/countdown.component';
 import { DeleteConfirmComponent } from './components/delete-confirm/delete-confirm.component';
 import { LoginComponent } from './components/login/login.component';
 import { LogoutComponent } from './components/logout/logout.component';
@@ -51,6 +52,7 @@ import { CrudService } from './services/laravel/crud.service';
     TextMaskModule
   ],
   exports:[
+    CountdownComponent,
     DeleteConfirmComponent,
     LoginComponent,
     LogoutComponent,
@@ -74,6 +76,7 @@ import { CrudService } from './services/laravel/crud.service';
     TextMaskModule
   ],
   declarations: [
+    CountdownComponent,
     DeleteConfirmComponent,
     LoginComponent,
     LogoutComponent,

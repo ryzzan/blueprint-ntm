@@ -54,8 +54,8 @@
           <mat-icon>group_work</mat-icon>
         </div>
         <mat-form-field>
-        <mat-select class="font-pattern" placeholder="Área Tecnológica" formControlName="occupation_group_id">
-          <mat-option *ngFor="let occupationGroup of occupationGroupToSelect" [value]="occupationGroup.id">{{occupationGroup.occupation_group_name}}</mat-option>
+          <mat-select class="font-pattern" placeholder="Área Tecnológica" formControlName="occupation_group_id">
+            <mat-option *ngFor="let occupationGroup of occupationGroupToSelect" [value]="occupationGroup.id">{{occupationGroup.occupation_group_name}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -74,17 +74,17 @@
       <div class="clear-both"></div>
       
       <div class="float-left mr10">
-        <div class="float-left">
+        <div class="float-left div-form-pattern">
           <mat-icon>group_work</mat-icon>
         </div>
         <mat-form-field>
-        <mat-select class="font-pattern" placeholder="Instituição" formControlName="institution_id">
-          <mat-option *ngFor="let institution of institutionToSelect" 
-          [value]="institution.id"> 
-            {{institution.institution_name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+          <mat-select class="font-pattern" placeholder="Instituição" formControlName="institution_id">
+            <mat-option *ngFor="let institution of institutionToSelect" 
+            [value]="institution.id"> 
+              {{institution.institution_name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
       <div class="float-left mr10 div-form-pattern">

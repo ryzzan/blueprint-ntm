@@ -29,8 +29,8 @@
     <!--Toolbar end -->
 
     <!--List area: start -->
-    <div class="float.left">
-      <form [formGroup]="listForm" class=""> 
+    <div>
+      <form [formGroup]="listForm"> 
         <mat-progress-bar mode="indeterminate" *ngIf="isLoadingList"></mat-progress-bar>
 
         <table *ngIf="!isLoadingList && arraySourceSearch.length>=1">
@@ -44,20 +44,24 @@
               {{ header }} <a><mat-icon class="mat-18" *ngIf="params.list.order" (click)="onClickOrder(i)">sort</mat-icon></a>
             </th>
 
-            <th class="list-item-actions" *ngIf="params.list.edit || params.list.delete">
+            <th *ngIf="params.list.edit || params.list.delete">
               
             </th>
           </tr>
+          
           <tr class="list-item" *ngFor="let data of arraySourceSearch; let i = index">
             <td *ngIf="params.toolbar && params.toolbar.delete" [ngStyle]="{'background-color': arraySource[i].backgroundColor, 'color': arraySource[i].color}">
               <mat-checkbox class="list-item" [checked]="checkAllItens" (change)="checkItem(i, $event)" formControlName="deleteField"></mat-checkbox>
             </td>
+            
             <td *ngFor="let item of data; let j = index" [ngStyle]="{'background-color': arraySource[i].backgroundColor, 'color': arraySource[i].color}">
               <span> {{ item }} </span>
             </td>
-            <td class="list-item-actions" *ngIf="params.list.edit" [ngStyle]="{'background-color': arraySource[i].backgroundColor, 'color': arraySource[i].color}">
-              <a *ngIf="params.list.edit" (click)="onClickEdit(params.list.edit.route, arraySource[i][params.list.edit.param])"><mat-icon>edit</mat-icon></a>
-            </td>
+
+            <td class="list-item-actions" [ngStyle]="{'background-color': arraySource[i].backgroundColor, 'color': arraySource[i].color}">
+                <a *ngIf="params.list.edit" (click)="onClickEdit(params.list.edit.route, arraySource[i][params.list.edit.param])"> <mat-icon>edit</mat-icon> </a>
+              </td>
+
           </tr>
           
         </table>

@@ -24,5 +24,23 @@
 <div class="clear-both"></div>
 
 <div id="router-outlet">
+  <form [formGroup]="mainCompetitionForm">
+    <mat-card class="competition-selection">
+      <mat-form-field>
+        <mat-select class="float-left font-pattern" placeholder="Competição" formControlName="name">
+          <mat-option *ngFor="let item of competitionSelect" [value]="item.id">{{item.name}} - {{item.id}} - {{competitionSelected.value}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card>
+  </form>
+  
+  <mat-card class="countdown">
+    <div class="countdown-div">
+      <ntm-countdown [params]="paramsToCountDown"></ntm-countdown>
+    </div>
+  </mat-card>
+    
+  <div class="clear-both"></div>
+
   <router-outlet></router-outlet>
 </div>

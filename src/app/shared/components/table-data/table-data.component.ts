@@ -176,6 +176,14 @@ export class TableDataComponent implements OnInit, OnChanges {
   ngOnInit() { 
     if (screen.width < 1024 || screen.height < 768) {
       this.isMobile = true;
+      let temp = [];
+      
+      temp.push(this.arrayHeader[0]);
+
+      this.arrayHeader = [];
+      this.arrayHeader.push(temp);
+
+      console.log(this.arrayHeader)
     } else {
       this.isMobile = false;
     }
@@ -209,12 +217,20 @@ export class TableDataComponent implements OnInit, OnChanges {
             pKToCheck: this.params.toolbar.search
           })
         } else {
-          for(let lim = this.params.list.show.length, i = 0; i < lim; i++) {
+          if(this.isMobile) {
             this.searchValue.push({
-              where: this.params.list.show[i],
+              where: this.params.list.show[0],
               value: this.searchForm.get('search').value,
               pKToCheck: this.params.toolbar.search
             })
+          } else {
+            for(let lim = this.params.list.show.length, i = 0; i < lim; i++) {
+              this.searchValue.push({
+                where: this.params.list.show[i],
+                value: this.searchForm.get('search').value,
+                pKToCheck: this.params.toolbar.search
+              })
+            }
           }
         }
       } else {
@@ -393,13 +409,19 @@ export class TableDataComponent implements OnInit, OnChanges {
       let fieldValue;
       let temp = [];
       
-      for(let lim = this.params.list.show.length, i = 0; i < lim; i++){
-        temp.push(data[this.params.list.show[i]]);
+      if(this.isMobile) {
+        for(let lim = 1, i = 0; i < lim; i++){
+          temp.push(data[this.params.list.show[0]]);
+        }
+      } else {
+        for(let lim = this.params.list.show.length, i = 0; i < lim; i++){
+          temp.push(data[this.params.list.show[i]]);
+        }
       }
 
       return temp;
     })
-    
+    console.log(filter)
     this.backgroundColorIndex = (filter.length);
     this.colorIndex = (filter.length - 1);
     this.arrayNoFilter = noFilter;
@@ -430,11 +452,7 @@ export class TableDataComponent implements OnInit, OnChanges {
       limit: this.params.list.limit,
       order: this.params.list.order,
       page: this.pageCurrent,
-      search: this.searchValue,
-      where: [{
-        where: 'competition_id',
-        value: 1
-      }]
+      search: this.searchValue
     }
 
     let checkWhere;
