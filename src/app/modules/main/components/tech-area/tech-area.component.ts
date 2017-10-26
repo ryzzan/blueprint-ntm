@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
  * Services
  */
 import { CrudService } from './../../../../shared/services/laravel/crud.service';
+import { MainService } from './../../main.service';
 
 @Component({
   selector: 'app-tech-area',
@@ -15,6 +16,7 @@ import { CrudService } from './../../../../shared/services/laravel/crud.service'
 })
 export class TechAreaComponent implements OnInit {
   array: any;
+  competitionId: number;
   occupationsGroupsForm: FormGroup;
   paramsToTableData: any;  
   title: string;
@@ -26,9 +28,10 @@ export class TechAreaComponent implements OnInit {
   /*update properties no change end*/
 
   constructor(
-    private crud: CrudService,
-    private matsnackbar: MatSnackBar,
     private route: ActivatedRoute,
+    private crud: CrudService,
+    private mainService: MainService,
+    private matsnackbar: MatSnackBar,
     private router: Router
   ) { }
 
@@ -46,7 +49,7 @@ export class TechAreaComponent implements OnInit {
           route: 'occupations-groups',
           order: ['id', 'desc'],
           where: [{
-            where: 'id',
+            field: 'id',
             value: this.paramToSearch.replace(':', '')
           }]
         }).then(res => {
@@ -63,13 +66,21 @@ export class TechAreaComponent implements OnInit {
       }
     })
     /*update end*/
-
-    this.occupationsGroupsForm = new FormGroup({
-      'competition_id': new FormControl(1),
-      'occupation_group_name': new FormControl(null,[Validators.maxLength(191),Validators.required])
-    });
-
-    this.makeList();
+    
+    this.mainService
+    .getCompetitionId()
+    .subscribe(data => {
+      this.competitionId = data;
+      
+      this.occupationsGroupsForm = new FormGroup({
+        'competition_id': new FormControl(this.competitionId),
+        'occupation_group_name': new FormControl(null,[Validators.maxLength(191),Validators.required])
+      });
+      
+      this.makeList();
+    }, error => {
+     console.log(error)      
+    })
   }
 
   makeList = () => {
@@ -81,7 +92,7 @@ export class TechAreaComponent implements OnInit {
           routeAfterDelete: '/main/tech-area',
           param: 'id'
         }],
-        search: true
+        search: "id" //pk
       },
       list: {
         route: "occupations-groups",
@@ -89,7 +100,11 @@ export class TechAreaComponent implements OnInit {
         header: ['Nome'],
         order: ['id', 'desc'],
         edit: {route: '/main/tech-area/', param: 'id'},
-        source: true
+        source: true,
+        where: [{
+          field:'competition_id',
+          value: this.competitionId
+        }]
       },
       actionToolbar: {
         language: 'pt-br'

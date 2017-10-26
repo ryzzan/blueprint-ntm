@@ -1,4 +1,111 @@
-<p>
-    participation works!
-</p>
-  
+<mat-card class="mt10">
+        <h2><b>{{title}}</b></h2>
+        
+        <hr>
+        
+        <form (ngSubmit)="onParticipationProfileSubmit()" [formGroup]="participationProfileForm">
+          <div class="float-left mr10 div-form-pattern">
+            <div class="float-left">
+              <mat-icon>person</mat-icon>
+            </div>
+            <mat-input-container>
+              <input matInput type="text" placeholder="Nome"
+              formControlName="profile_name">
+            </mat-input-container>
+          </div>
+
+          <div class="float-left mr10">
+            <div class="float-left div-form-pattern">
+              <mat-icon>group_work</mat-icon>
+            </div>
+            <mat-form-field>
+              <mat-select class="font-pattern" placeholder="Grupo de Perfil" formControlName="profile_group_id">
+                <mat-option *ngFor="let profileGroup of profileGroupToSelect" [value]="profileGroup.id">{{profileGroup.group_profile_name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+    
+          <div class="clear-both"></div>
+    
+          <div class="float-left mr10 div-form-pattern">
+            <mat-slide-toggle [checked]="participationProfileForm.get('show_percentage_preparation').value" (change)="onChangePercentageDemonstration($event)">Apresentar percentual de preparação</mat-slide-toggle>
+          </div>
+    
+          <div class="float-left mr10 div-form-pattern">
+            <mat-slide-toggle [checked]="participationProfileForm.get('require_participant_association_occupation').value" (change)="onChangePaticipantAssociationOccupation($event)">Associação do participante na ocupação</mat-slide-toggle>
+          </div>
+    
+          <div class="float-left mr10 div-form-pattern">
+            <mat-slide-toggle [checked]="participationProfileForm.get('require_participant_association_delegation').value" (change)="onChangePaticipantAssociationDelegation($event)">Associação do participante na delegação</mat-slide-toggle>
+          </div>
+    
+          <div class="float-left mr10 div-form-pattern">
+            <mat-slide-toggle [checked]="participationProfileForm.get('intentional_management').value" (change)="onChangeIntentionalManagement($event)"></mat-slide-toggle>
+            Permitir gerenciamento de intenções de participação
+          </div>
+      
+          <div class="clear-both"></div>
+    
+          <fieldset *ngIf="participationProfileCheckLength">
+            <legend>Permissões para Convites</legend>
+    
+            <div class="float-left mr10 div-form-pattern">
+              <div class="float-left">
+                <mat-icon>group_work</mat-icon>
+              </div>
+              <mat-form-field>
+                <mat-select class="font-pattern" placeholder="Nome do Perfil" formControlName="profile_group_id">
+                  <mat-option *ngFor="let participationProfile of participationProfileToSelect" [value]="participationProfile.id">{{participationProfile.profile_name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="float-right mr10 div-form-pattern">
+              <button mat-mini-fab type="button" color="primary"
+              (click)="onAddInvitationPermission()"
+              [disabled]="participationProfileForm.get('profile_group_id').value == null">
+                <mat-icon class="mat-18">add</mat-icon>
+              </button>
+            </div>
+            <div class="clear-both"></div>
+      
+            <div formGroupName="invites">
+              <div *ngFor="let item of participationProfileForm.get('invites').value; let i = index;">
+                <div [formGroupName]="i" [ngStyle]="{'background-color': item._backgroundColor}">
+                  <div class="float-left">
+                    <div class="float-left div-form-pattern">
+                      <mat-icon class="mat-18">location_on</mat-icon>
+                    </div>
+                    
+                    <div class="float-left mr10 div-form-pattern">
+                      <mat-input-container>
+                        <input matInput type="text" placeholder="Nome do Perfil" 
+                        formControlName="profile_group_id">
+                      </mat-input-container>
+                    </div>
+                  </div> 
+      
+                  <div class="float-right mr10 div-form-pattern">
+                    <button mat-mini-fab type="button" color="warn"
+                    (focus)="onRemoveInvitationPermission(i)">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+      
+                  <div class="clear-both"></div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+    
+          <div class="clear-both"></div>
+    
+          <mat-card-actions>
+            <button mat-raised-button type="submit" color="primary">{{submitButton}}</button>
+          </mat-card-actions>
+        </form>
+      </mat-card>
+      
+      <div class="list mt10">
+        <ntm-table-data [params]="paramsToTableData"></ntm-table-data>
+      </div>

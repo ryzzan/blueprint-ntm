@@ -53,13 +53,6 @@
             [textMask]="{mask: mask.date}"
             placeholder="Data Inicial">
           </mat-input-container>
-          <!--<mat-form-field>
-            <input matInput [matDatepicker]="cityDateStartPicker" 
-            placeholder="Data Inicial" 
-            formControlName="initialDate">
-            <mat-datepicker-toggle matSuffix [for]="cityDateStartPicker"></mat-datepicker-toggle>
-            <mat-datepicker #cityDateStartPicker></mat-datepicker>
-          </mat-form-field>-->
         </div>
       </div>
 
@@ -73,13 +66,6 @@
             [textMask]="{mask: mask.date}"
             placeholder="Data de Término">
           </mat-input-container>
-          <!--<mat-form-field>
-            <input matInput [matDatepicker]="cityDateEndPicker" 
-            placeholder="Data de Término" 
-            formControlName="endDate">
-            <mat-datepicker-toggle matSuffix [for]="cityDateEndPicker"></mat-datepicker-toggle>
-            <mat-datepicker #cityDateEndPicker></mat-datepicker>
-          </mat-form-field>-->
         </div>
       </div>
       
@@ -116,11 +102,6 @@
                   [textMask]="{mask: mask.date}"
                   placeholder="Data Inicial">
                 </mat-input-container>
-                <!--<mat-form-field>
-                  <input matInput [matDatepicker]="city._matDatePickerId1?.value" 
-                  placeholder="Data Inicial" 
-                  formControlName="initialDate">
-                </mat-form-field>-->
               </div>
             </div>
       
@@ -129,13 +110,6 @@
                 <mat-icon class="mat-18">date_range</mat-icon>
               </div>
               <div class="float-left mr10 div-form-pattern">
-                <!--<mat-form-field>
-                  <input matInput [matDatepicker]="city._matDatePickerId2?.value" 
-                  placeholder="Data de Término" 
-                  formControlName="endDate">
-                  <mat-datepicker-toggle matSuffix [for]="city._matDatePickerId2"></mat-datepicker-toggle>
-                  <mat-datepicker #{{city._matDatePickerId2}}></mat-datepicker>
-                </mat-form-field>-->
                 <mat-input-container>
                   <input matInput formControlName="endDate" type="text"
                   [textMask]="{mask: mask.date}"
@@ -146,7 +120,7 @@
 
             <div class="float-right mr10 div-form-pattern">
               <button mat-mini-fab type="button" color="warn"
-              (click)="onRemoveCity(i)">
+              (focus)="onRemoveCity(i)">
                 <mat-icon>remove</mat-icon>
               </button>
             </div>

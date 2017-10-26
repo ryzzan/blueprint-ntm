@@ -158,8 +158,6 @@ export class TableDataComponent implements OnInit, OnChanges {
         this.placeholderToPage = "de";
         this.placeholderToSearch = "Campo";
       }
-
-      console.log(this.placeholderToRowsPerPage)
     } 
     
     /**
@@ -182,8 +180,6 @@ export class TableDataComponent implements OnInit, OnChanges {
 
       this.arrayHeader = [];
       this.arrayHeader.push(temp);
-
-      console.log(this.arrayHeader)
     } else {
       this.isMobile = false;
     }
@@ -421,7 +417,7 @@ export class TableDataComponent implements OnInit, OnChanges {
 
       return temp;
     })
-    console.log(filter)
+    
     this.backgroundColorIndex = (filter.length);
     this.colorIndex = (filter.length - 1);
     this.arrayNoFilter = noFilter;
@@ -431,7 +427,6 @@ export class TableDataComponent implements OnInit, OnChanges {
 
   onClickEdit = (route, param) => {
     let finalRoute = [route+":"+param];
-    
     this.router.navigate(finalRoute);
   }
 
@@ -447,12 +442,25 @@ export class TableDataComponent implements OnInit, OnChanges {
   }
 
   readData = () => {
-    let readParams = {
-      route: this.params.list.route,
-      limit: this.params.list.limit,
-      order: this.params.list.order,
-      page: this.pageCurrent,
-      search: this.searchValue
+    let readParams;
+
+    if(this.params.list.where) {
+      readParams = {
+        route: this.params.list.route,
+        limit: this.params.list.limit,
+        order: this.params.list.order,
+        page: this.pageCurrent,
+        where: this.params.list.where,
+        search: this.searchValue
+      }
+    } else {
+      readParams = {
+        route: this.params.list.route,
+        limit: this.params.list.limit,
+        order: this.params.list.order,
+        page: this.pageCurrent,
+        search: this.searchValue
+      }
     }
 
     let checkWhere;

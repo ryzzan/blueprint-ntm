@@ -21,19 +21,25 @@ export class CountdownComponent implements OnChanges {
   hour: number;
   minute: number;
 
+  message1: boolean;
+  message2: boolean;
+
   constructor() { }
 
   ngOnChanges() {
     setTimeout(() => {
-      this.countdown();
-    }, 500);
+      this.countdown(); 
+    }, 100);
   }
 
   countdown = () => {
+    this.message1 = false;
+    this.message2 = false;
+
     let todayDate = new Date();
     let todayMilisseconds = todayDate.getTime();
     let cd = 24 * 60 * 60 * 1000, ch = 60 * 60 * 1000;
-
+    
     if(!this.params) {
       this.errors.push({
         cod: 'p-01',
@@ -45,15 +51,15 @@ export class CountdownComponent implements OnChanges {
           cod: 'c-01',
           message: 'Definir data final em milissegundos: - { milissecondsFinalDate: number }'
         })
-      }
-
-      if(!this.params.milissecondsStartDate) {
+      }else if(!this.params.milissecondsStartDate) {
         this.errors.push({
           cod: 'c-02',
           message: 'Definir data inicial em milissegundos: - { milissecondsStartDate: number }'
         })
+      } else {
+        this.errors = [];
       }
-
+      
       if(this.errors.length < 1) {
         if(this.params.milissecondsFinalDate - this.params.milissecondsStartDate > 0) {
           setTimeout(() => {
@@ -80,21 +86,36 @@ export class CountdownComponent implements OnChanges {
 
             this.minute = Math.round( (this.counting - this.day * cd - this.hour * ch) / 60000);
             if(this.minute > 0) {
-              if(this.minute > 1) {
-                this.hourString += " e";
-                
-                this.minuteString = "minutos";
+              if(this.minute == 60) {
+                this.hour++;
+                this.minute = null;
+                this.hourString += "";
+                this.dayString += " e"
               } else {
-                this.hourString += " e";
-                
-                this.minuteString = "minuto";
+                if(this.minute > 1) {
+                  this.hourString += " e";
+                  
+                  this.minuteString = "minutos";
+                } else {
+                  this.hourString += " e";
+                  
+                  this.minuteString = "minuto";
+                }
               }
             }
             this.countdown();
-          }, 500);
+          }, 100);
+        } else if(this.params.milissecondsFinalDate - this.params.milissecondsStartDate < 0) {
+          this.message2 = true;
         }
       } else {
-        console.log(51)
+        if(isNaN(this.params.milissecondsFinalDate)) {
+          this.errors = [];
+          this.message2 = true;
+        } else if(this.params.milissecondsFinalDate == 0) {
+          this.errors = [];
+          this.message1 = true;
+        }
       }
     }
   }

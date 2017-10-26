@@ -115,7 +115,7 @@ export class CrudService {
         setGet = "?";
         
         if(params.where.length == 1) {
-          where = "&where["+params.where[0].where+"]="+params.where[0].value;
+          where = "&where["+params.where[0].field+"]="+params.where[0].value;
         };
         
         if(params.where.length > 1) {
@@ -222,7 +222,6 @@ export class CrudService {
                   arrayObj.push(obj);
                 }*/
                 if((lim-1) == i) {
-                  console.log(arrayObj)
                   obj = arrayObj[0];
                   resolve({
                     obj
@@ -406,7 +405,6 @@ export class CrudService {
     }
 
     for(let lim = paramToDelete.length, i = 0; i < lim; i++) {
-      console.log(this.url+route+"/"+paramToDelete[i])
       this.http
       .delete(
         this.url+route+"/"+paramToDelete[i]

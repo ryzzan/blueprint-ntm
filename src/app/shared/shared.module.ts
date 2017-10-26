@@ -5,6 +5,8 @@ import { MatDatepickerModule, MatChipsModule, MatNativeDateModule, MatCardModule
   MatInputModule,MatSnackBarModule, MatIconModule, MatButtonModule, MatSlideToggleModule,MatToolbarModule, MatProgressBarModule } from '@angular/material';
 import { Routes, RouterModule } from '@angular/router';
 
+import 'hammerjs';
+
 /**
  * Components
  */
@@ -31,6 +33,7 @@ import { TextMaskModule } from 'angular2-text-mask';
  */
 import { AuthenticationService } from './services/laravel/authentication.service';
 import { CrudService } from './services/laravel/crud.service';
+import { MainService } from './../modules/main/main.service';
 
 @NgModule({
   imports: [
@@ -87,7 +90,8 @@ import { CrudService } from './services/laravel/crud.service';
   providers: [
     AuthenticationService,
     AuthGuard,
-    CrudService
+    CrudService,
+    MainService
   ],
   entryComponents: [
     DeleteConfirmComponent

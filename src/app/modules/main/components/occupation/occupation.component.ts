@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material';
  * Services
  */
 import { CrudService } from './../../../../shared/services/laravel/crud.service';
+import { MainService } from './../../main.service';
 
 @Component({
   selector: 'app-occupation',
@@ -15,6 +16,7 @@ import { CrudService } from './../../../../shared/services/laravel/crud.service'
 })
 export class OccupationComponent implements OnInit {
   array: any;
+  competitionId: number;
   hostToSelect: any;
   occupationForm: FormGroup;
   occupationGroupToSelect: any;
@@ -33,6 +35,7 @@ export class OccupationComponent implements OnInit {
 
   constructor(
     private crud: CrudService,
+    private mainService: MainService,
     private matsnackbar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router
@@ -52,7 +55,7 @@ export class OccupationComponent implements OnInit {
           route: 'occupations',
           order: ['id', 'desc'],
           where: [{
-            where: 'id',
+            field: 'id',
             value: this.paramToSearch.replace(':', '')
           }]
         }).then(res => {
@@ -99,7 +102,7 @@ export class OccupationComponent implements OnInit {
     });
 
     this.occupationForm = new FormGroup({
-      'competition_id': new FormControl(1),
+      'competition_id': new FormControl(null),
       'occupation_name': new FormControl(null,[Validators.maxLength(191),Validators.required]),
       'occupation_number': new FormControl(null,[Validators.maxLength(5),Validators.required]),
       'number_participants': new FormControl(null),
@@ -113,7 +116,30 @@ export class OccupationComponent implements OnInit {
       'institution_id': new FormControl(null)
     });
 
-    this.makeList();
+    this.mainService
+    .getCompetitionId()
+    .subscribe(data => {
+      this.competitionId = data;
+      
+      this.occupationForm = new FormGroup({
+        'competition_id': new FormControl(this.competitionId),
+        'occupation_name': new FormControl(null,[Validators.maxLength(191),Validators.required]),
+        'occupation_number': new FormControl(null,[Validators.maxLength(5),Validators.required]),
+        'number_participants': new FormControl(null),
+        'age_limit': new FormControl(null,Validators.required),
+        'occupation_group_id': new FormControl(null,Validators.required),
+        //'group_code_forum': new FormControl(null),
+        'nickname': new FormControl(null,[Validators.maxLength(191)]),
+        'is_demonstration': new FormControl(false),
+        'is_disability': new FormControl(false),
+        'host_id': new FormControl(null),
+        'institution_id': new FormControl(null)
+      });
+
+      this.makeList();
+    }, error => {
+     console.log(error)      
+    })
   }
 
   makeList = () => {
@@ -125,7 +151,7 @@ export class OccupationComponent implements OnInit {
           routeAfterDelete: '/main/occupation',
           param: 'id'
         }],
-        search: true
+        search: 'id'
       },
       list: {
         route: "occupations",
@@ -134,6 +160,10 @@ export class OccupationComponent implements OnInit {
         order: ['id', 'desc'],
         edit: {route: '/main/occupation/', param: 'id'},
         source: true,
+        where: [{
+          field: 'competition_id',
+          value: this.competitionId
+        }],
         changeValue: [{
           field: 'is_disability',
           fieldValue: 0,

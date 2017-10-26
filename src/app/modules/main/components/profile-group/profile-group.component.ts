@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
  * Services
  */
 import { CrudService } from './../../../../shared/services/laravel/crud.service';
+import { MainService } from './../../main.service';
 
 @Component({
   selector: 'app-profile-group',
@@ -15,6 +16,7 @@ import { CrudService } from './../../../../shared/services/laravel/crud.service'
 })
 export class ProfileGroupComponent implements OnInit {
   array: any;
+  competitionId: number;
   profileGroupForm: FormGroup;
   paramToSearch: any;
   paramsToTableData: any;
@@ -25,6 +27,7 @@ export class ProfileGroupComponent implements OnInit {
 
   constructor(
     private crud: CrudService,
+    private mainService: MainService,
     private matsnackbar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router
@@ -44,7 +47,7 @@ export class ProfileGroupComponent implements OnInit {
           route: 'profiles-groups',
           order: ['id', 'desc'],
           where: [{
-            where: 'id',
+            field: 'id',
             value: this.paramToSearch.replace(':', '')
           }]
         }).then(res => {
@@ -63,11 +66,24 @@ export class ProfileGroupComponent implements OnInit {
     /*update end*/
 
     this.profileGroupForm = new FormGroup({
-      'competition_id': new FormControl(1),
+      'competition_id': new FormControl(null),
       'group_profile_name': new FormControl(null,[Validators.maxLength(191),Validators.required])
     });
 
-    this.makeList();
+    this.mainService
+    .getCompetitionId()
+    .subscribe(data => {
+      this.competitionId = data;
+      
+      this.profileGroupForm = new FormGroup({
+        'competition_id': new FormControl(this.competitionId),
+        'group_profile_name': new FormControl(null,[Validators.maxLength(191),Validators.required])
+      });
+      
+      this.makeList();
+    }, error => {
+     console.log(error)      
+    })
   }
 
   makeList = () => {
@@ -79,7 +95,7 @@ export class ProfileGroupComponent implements OnInit {
           routeAfterDelete: '/main/profile-group',
           param: 'id'
         }],
-        search: true
+        search: 'id'
       },
       list: {
         route: "profiles-groups",
@@ -87,7 +103,11 @@ export class ProfileGroupComponent implements OnInit {
         header: ['Grupo de Perfil'],
         order: ['id', 'desc'],
         edit: {route: '/main/profile-group/', param: 'id'},
-        source: true
+        source: true,
+        where: [{
+          field: 'competition_id',
+          value: this.competitionId
+        }]
       },
       actionToolbar: {
         language: 'pt-br'

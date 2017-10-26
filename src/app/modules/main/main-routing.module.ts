@@ -62,7 +62,7 @@ const routes: Routes = [{
     path: 'profile-group/:id',
     component: ProfileGroupComponent
   }, {
-    path: 'partiticpation-profile/:id',
+    path: 'participation-profile/:id',
     component: ParticipationProfileComponent
   }]
 }];

@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 /**
  * Services
  */
 import { CrudService } from './../../shared/services/laravel/crud.service';
+import { MainService } from './main.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnChanges {
   competitionsObject: any;
   paramsToMenuSideNav: any;
+  competitionId: number;
   title: string = "SGO";
 
   mainCompetitionForm: FormGroup;
@@ -23,6 +25,7 @@ export class MainComponent implements OnInit {
    */
   competitionSelect: any;
   competitionSelected: any;
+  isLoading: boolean = true;
   /**
    * Competition select end
    */
@@ -30,8 +33,14 @@ export class MainComponent implements OnInit {
    paramsToCountDown: any;
 
   constructor(
-    private crud: CrudService
+    private crud: CrudService,
+    private mainService: MainService
   ) { }
+
+  ngOnChanges () {
+    console.log(41);
+    this.mainService.setCompetitionId(this.mainCompetitionForm.get('name').value);
+  }
 
   ngOnInit() {
     this.mainCompetitionForm = new FormGroup({
@@ -44,22 +53,28 @@ export class MainComponent implements OnInit {
         route: ['/main/competition']
       }, {
         description: "Delegações",
-        route: ['/main/delegation']
+        route: ['/main/delegation'],
+        data: {competition_id: this.competitionId}
       }, {
         description: "Áreas Tecnológicas",
-        route: ['/main/tech-area']
+        route: ['/main/tech-area'],
+        data: {competition_id: this.competitionId}
       }, {
         description: "Instituições",
-        route: ['/main/institution']
+        route: ['/main/institution'],
+        data: {competition_id: this.competitionId}
       }, {
         description: "Ocupações",
-        route: ['/main/occupation']
+        route: ['/main/occupation'],
+        data: {competition_id: this.competitionId}
       }, {
         description: "Grupos de Perfis",
-        route: ['/main/profile-group']
+        route: ['/main/profile-group'],
+        data: {competition_id: this.competitionId}
       }, {
         description: "Perfis de Participação",
-        route: ['/main/participation-profile']
+        route: ['/main/participation-profile'],
+        data: {competition_id: this.competitionId}
       }]
     }
 
@@ -73,6 +88,7 @@ export class MainComponent implements OnInit {
       let tempHostDate, lowerDate, competitionId, competitionName, todayDate, loopDate;
       todayDate = new Date();
       this.competitionSelect = res['obj'];
+      this.isLoading = false;
 
       //Checando a menor data de competição para countdown: início
       for(let lim = this.competitionSelect.length, i =0; i < lim; i++) {
@@ -85,11 +101,9 @@ export class MainComponent implements OnInit {
                 if(loopDate < tempHostDate) {
                   lowerDate = this.competitionSelect[i].hosts[j].initialDate;
                   competitionId = this.competitionSelect[i].hosts[j].competition_id;
-                  competitionName = this.competitionSelect[i].name;
 
                   this.competitionSelected = {
                     value: competitionId,
-                    name: competitionName,
                     _lowerDate: lowerDate
                   }
                 }
@@ -105,11 +119,9 @@ export class MainComponent implements OnInit {
 
               lowerDate = this.competitionSelect[i].hosts[0].initialDate;
               competitionId = this.competitionSelect[i].hosts[0].competition_id;
-              competitionName = this.competitionSelect[i].name;
 
               this.competitionSelected = {
                 value: competitionId,
-                name: competitionName,
                 _lowerDate: lowerDate
               }
             } else {
@@ -118,10 +130,13 @@ export class MainComponent implements OnInit {
           }
         }
       }
-      console.log(this.mainCompetitionForm.get('name'));
-      console.log(this.competitionSelected)
-      this.mainCompetitionForm.get('name').setValue(this.competitionSelected.value);
+
+      let tempNumber = parseInt(this.competitionSelected.value);
+      this.mainCompetitionForm.get('name').setValue(tempNumber);
       this.countdown();
+      this.competitionId = this.mainCompetitionForm.get('name').value;
+      
+      this.mainService.setCompetitionId(this.competitionId);
       //Checando a menor data de competição para countdown: fim
     })
   }
@@ -135,8 +150,67 @@ export class MainComponent implements OnInit {
       milissecondsFinalDate: higherNumberToCountDown, 
       milissecondsStartDate: todayDate.getTime()
     };
+  }
 
-    console.log(this.paramsToCountDown)
+  countdownChosen = (e) => {
+    let tempHostDate, lowerDate, competitionId, competitionName, todayDate, loopDate;
+    this.isLoading = true;
+    this.paramsToCountDown = {};
+    this.crud.read({
+      route: 'competitions',
+      order: ['id', 'desc'],
+      where: [{
+        field: 'id',
+        value: e.value
+      }]
+    }).then(res => {
+      let obj = res['obj'][0];
+      let todayDate = new Date();
+      let higherNumberToCountDown: number;
+      this.isLoading = false;
+      if(obj.hosts.length > 0) {
+        for(let lim = obj.hosts.length, i = 0; i < lim; i++) {
+          if(i > 0) {
+            loopDate = new Date(obj.hosts[i].initialDate);
+            
+            if(loopDate > todayDate) {
+              if(loopDate < tempHostDate) {
+                lowerDate = obj.hosts[i].initialDate;
+              }
+
+              tempHostDate = new Date(obj.hosts[i].initialDate);
+            }
+          } else {
+            loopDate = new Date(obj.hosts[0].initialDate);
+            
+            if(loopDate > todayDate) {
+              tempHostDate = obj.hosts[0].initialDate;
+              lowerDate = obj.hosts[0].initialDate;
+            } else {
+              tempHostDate = new Date('4000/12/30 03:00:00');
+            }
+          }
+
+          let higherDateToCountdDown = new Date(lowerDate);
+          let higherNumberToCountDown = higherDateToCountdDown.getTime();
+  
+          this.paramsToCountDown = {
+            milissecondsFinalDate: higherNumberToCountDown, 
+            milissecondsStartDate: todayDate.getTime()
+          };
+        }
+      } else {
+        this.paramsToCountDown = {
+          milissecondsFinalDate: 0, 
+          milissecondsStartDate: todayDate.getTime()
+        };
+      }
+      //this.profileGroupForm.get('group_profile_name').setValue(obj.group_profile_name);
+
+      this.competitionId = this.mainCompetitionForm.get('name').value;
+
+      this.mainService.setCompetitionId(this.competitionId);
+    })
   }
 
   setCompetitionsObject = () => {

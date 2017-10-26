@@ -65,7 +65,7 @@ export class CompetitionComponent implements OnInit {
           route: 'competitions',
           order: ['id', 'desc'],
           where: [{
-            where: 'id',
+            field: 'id',
             value: this.paramToSearch.replace(':', '')
           }]
         }).then(res => {
@@ -86,32 +86,23 @@ export class CompetitionComponent implements OnInit {
 
           //Working over hosts
           for(let lim = obj.hosts.length, i = 0; i < lim; i++) {
-            /*let backgroundColor;
-            let matDatePickerId1 = this.competitionForm.get('hosts').value.length + "id1";
-            let matDatePickerId2 = this.competitionForm.get('hosts').value.length + "id2";
-        
-            if((this.competitionForm.get('hosts').value.length % 2 == 0)) {
-              backgroundColor = '#cfd8dc';
-            } else {
-              backgroundColor = '#fff';
-            }
-        
-            let control = new FormGroup({
-              'host_name': new FormControl(obj.hosts[i].host_name),
-              'endDate': new FormControl(obj.hosts[i].endDate), 
-              'initialDate': new FormControl(obj.hosts[i].initialDate),
-              '_backgroundColor': new FormControl(backgroundColor),
-              '_matDatePickerId1': new FormControl(matDatePickerId1),
-              '_matDatePickerId2': new FormControl(matDatePickerId2)
-            });
-            
-            (<FormArray>this.competitionForm.get('hosts')).push(control);*/
-            console.log(obj.hosts[i].host_name);
+            let tempEndDate = new Date(obj.hosts[i].endDate);
+            let tempEndMonth = (tempEndDate.getMonth() < 10) ? ('0' + tempEndDate.getMonth()).slice(-2) : tempEndDate.getMonth();
+            let tempEndDay = (tempEndDate.getDate() < 10) ? ('0' + tempEndDate.getDate()).slice(-2) : tempEndDate.getDate();
 
+            let endDate = tempEndDay + "/" + tempEndMonth  + "/" + tempEndDate.getFullYear();
+
+            let tempInitialDate = new Date(obj.hosts[i].initialDate);
+            let tempInitialMonth = (tempInitialDate.getMonth() < 10) ? ('0' + tempInitialDate.getMonth()).slice(-2) : tempInitialDate.getMonth();
+            let tempInitialDay = (tempInitialDate.getDate() < 10) ? ('0' + tempInitialDate.getDate()).slice(-2) : tempInitialDate.getDate();
+
+            let initialDate = tempInitialDay + "/" + tempInitialMonth  + "/" + tempInitialDate.getFullYear();
+            
             let control = new FormGroup({
+              'component_id': new FormControl(this.paramToSearch),
               'host_name': new FormControl(obj.hosts[i].host_name),
-              'endDate': new FormControl(obj.hosts[i].endDate), 
-              'initialDate': new FormControl(obj.hosts[i].initialDate)
+              'endDate': new FormControl(endDate), 
+              'initialDate': new FormControl(initialDate)
             });
 
             (<FormArray>this.competitionForm.get('hosts')).push(control);
@@ -146,9 +137,14 @@ export class CompetitionComponent implements OnInit {
   }
 
   onAddCity = () => {
+    let competitionId;
     let backgroundColor;
     let matDatePickerId1 = this.competitionForm.get('hosts').value.length + "id1";
     let matDatePickerId2 = this.competitionForm.get('hosts').value.length + "id2";
+
+    if(this.paramToSearch) {
+      competitionId = this.paramToSearch
+    }
 
     if((this.competitionForm.get('hosts').value.length % 2 == 0)) {
       backgroundColor = '#cfd8dc';
@@ -157,6 +153,7 @@ export class CompetitionComponent implements OnInit {
     }
 
     let control = new FormGroup({
+      'competition_id': competitionId,
       'host_name': new FormControl(this.competitionForm.get('host_name').value),
       'endDate': new FormControl(this.competitionForm.get('endDate').value), 
       'initialDate': new FormControl(this.competitionForm.get('initialDate').value),

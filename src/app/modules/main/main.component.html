@@ -27,8 +27,8 @@
   <form [formGroup]="mainCompetitionForm">
     <mat-card class="competition-selection">
       <mat-form-field>
-        <mat-select class="float-left font-pattern" placeholder="Competição" formControlName="name">
-          <mat-option *ngFor="let item of competitionSelect" [value]="item.id">{{item.name}} - {{item.id}} - {{competitionSelected.value}}</mat-option>
+        <mat-select class="float-left font-pattern" placeholder="Competição" formControlName="name" (change)="countdownChosen($event)">
+          <mat-option *ngFor="let item of competitionSelect" [value]="item.id">{{item.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-card>
@@ -36,7 +36,8 @@
   
   <mat-card class="countdown">
     <div class="countdown-div">
-      <ntm-countdown [params]="paramsToCountDown"></ntm-countdown>
+        <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+      <ntm-countdown [params]="paramsToCountDown" *ngIf="!isLoading"></ntm-countdown>
     </div>
   </mat-card>
     

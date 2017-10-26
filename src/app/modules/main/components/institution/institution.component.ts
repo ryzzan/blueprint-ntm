@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
  * Services
  */
 import { CrudService } from './../../../../shared/services/laravel/crud.service';
+import { MainService } from './../../main.service';
 
 @Component({
   selector: 'app-institution',
@@ -15,6 +16,7 @@ import { CrudService } from './../../../../shared/services/laravel/crud.service'
 })
 export class InstitutionComponent implements OnInit {
   array: any;
+  competitionId: number;
   institutionForm: FormGroup;
   paramToSearch: any;
   paramsToTableData: any;
@@ -25,6 +27,7 @@ export class InstitutionComponent implements OnInit {
 
   constructor(
     private crud: CrudService,
+    private mainService: MainService,
     private matsnackbar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router
@@ -44,7 +47,7 @@ export class InstitutionComponent implements OnInit {
           route: 'institutions',
           order: ['id', 'desc'],
           where: [{
-            where: 'id',
+            field: 'id',
             value: this.paramToSearch.replace(':', '')
           }]
         })
@@ -65,11 +68,24 @@ export class InstitutionComponent implements OnInit {
     /*update end*/
 
     this.institutionForm = new FormGroup({
-      'competition_id': new FormControl(1),
+      'competition_id': new FormControl(null),
       'institution_name': new FormControl(null,Validators.required)
     });
 
-    this.makeList();
+    this.mainService
+    .getCompetitionId()
+    .subscribe(data => {
+      this.competitionId = data;
+      
+      this.institutionForm = new FormGroup({
+        'competition_id': new FormControl(this.competitionId),
+        'institution_name': new FormControl(null,Validators.required)
+      });
+
+      this.makeList();
+    }, error => {
+     console.log(error)      
+    })
   }
 
   makeList = () => {
@@ -81,7 +97,7 @@ export class InstitutionComponent implements OnInit {
           routeAfterDelete: '/main/institution',
           param: 'id'
         }],
-        search: true
+        search: 'id'
       },
       list: {
         route: "institutions",
@@ -89,7 +105,11 @@ export class InstitutionComponent implements OnInit {
         header: ['Instituição'],
         order: ['id', 'desc'],
         edit: {route: '/main/institution/', param: 'id'},
-        source: true
+        source: true,
+        where: [{
+          field:'competition_id',
+          value: this.competitionId
+        }]
       },
       actionToolbar: {
         language: 'pt-br'

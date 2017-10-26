@@ -4,6 +4,14 @@
   </mat-error>
 </div>
 
-<div *ngIf="errors.length < 1">
+<div *ngIf="message1">
+  Não há data definida para esta competição
+</div>
+
+<div *ngIf="message2">
+  Esta competição já passou ou foi iniciada
+</div>
+
+<div *ngIf="errors.length < 1 && !message1 && !message2">
   {{left}} {{day}} {{dayString}} {{hour}} {{hourString}} {{minute}} {{minuteString}}
 </div>
